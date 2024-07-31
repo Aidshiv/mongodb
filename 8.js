@@ -61,7 +61,7 @@ db.stocks.find({}).sort({location: -1}).limit(1).explain("executionStats").execu
 // output: 731290
 
 //    step 2: 
-db.stocks.find({}).sort({location: -1}).limit(1).explain("executionStats").executionStats.totalDocsExamined.executionTimeMillis
+db.stocks.find({}).sort({ location: -1 }).limit(1).explain("executionStats").executionStats.executionTimeMillis;
 // output: 423
 
 
