@@ -78,3 +78,5 @@ db.stocks.find({}).sort({location: -1}).limit(1).explain("executionStats").execu
 db.values.find({}).sort({location: -1}).limit(1).explain("executionStats").executionStats.executionTimeMillis
 //   output : 0
 // takes 0 ms to execute.
+
+
