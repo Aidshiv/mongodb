@@ -1,7 +1,7 @@
-// step 1:
 use restaurantDB
 
-// step 2:
+db.createCollection("restaurants")
+
 
 db.restaurants.insertMany([
   {
@@ -51,38 +51,15 @@ db.restaurants.insertMany([
   }
 ])
 
-// step 3:
-db.restaurants.aggregate([
-  {
-    $match: {
-      location: "Jayanagar"
-    }
-  },
-  {
-    $unwind: "$reviews"
-  },
-  {
-    $group: {
-      _id: "$name",
-      averageRating: { $avg: "$reviews.rating" },
-      totalReviews: { $sum: 1 }
-    }
-  },
-  {
-    $sort: {
-      averageRating: -1
-    }
-  },
-  {
-    $project: {
-      _id: 0,
-      restaurant: "$_id",
-      averageRating: 1,
-      totalReviews: 1
-    }
-  },
-  {
-    $skip: 1
-  }
-]).pretty()
 
+
+
+
+db.restaurants.aggregate([
+  { $match: { location: "Jayanagar" } },
+  { $unwind: "$reviews" },
+  { $group: { _id: "$name", averageRating: { $avg: "$reviews.rating" }, totalReviews: { $sum: 1 } } },
+  { $sort: { averageRating: -1 } },
+  { $project: { _id: 0, restaurant: "$_id", averageRating: 1, totalReviews: 1 } },
+  { $skip: 1 }
+]).pretty()
