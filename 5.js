@@ -1,52 +1,38 @@
 /*Experiment 5:
 Execute Aggregation operations:*/
 
-//step 1
-// Create a new database
-use experiment5
-
-// Create a new collection
-db.createCollection("people")
+db.createCollection("Sales")
 
 
-//Step2
-// Show databases
-show dbs
+use sales
 
-// Show collections
-show collections  
-
-
-//step 3 
-// Insert documents
-db.people.insertMany([
-  { name: "John", age: 25 },
-  { name: "Jane", age: 28 },
-  { name: "Bob", age: 30 },
-  { name: "Alice", age: 32 },
-  { name: "Michael", age: 35 },
-  { name: "Emily", age: 30 },
-  { name: "David", age: 38 },
-  { name: "Sarah", age: 29 }
+db.Sales.insertMany([
+  { date: new Date("2024-01-01"), product: "Laptop", price: 1200, quantity: 1, customer: "Amar" },
+  { date: new Date("2024-01-02"), product: "Laptop", price: 1200, quantity: 2, customer: "Babu" },
+  { date: new Date("2024-01-03"), product: "Mouse", price: 25, quantity: 5, customer: "Chandra" },
+  { date: new Date("2024-01-04"), product: "Keyboard", price: 45, quantity: 3, customer: "Amar" },
+  { date: new Date("2024-01-05"), product: "Monitor", price: 300, quantity: 1, customer: "Babu" },
+  { date: new Date("2024-01-06"), product: "Laptop", price: 1200, quantity: 1, customer: "Deva" }
 ])
 
 
-//step 4
-// $avg
-db.people.aggregate([{ $group: { _id: null, avgAge: { $avg: "$age" } } }])
 
-//step 5
-// $min
-db.people.aggregate([{ $group: { _id: null, minAge: { $min: "$age" } } }])
 
-//step 6
-// $max
-db.people.aggregate([{ $group: { _id: null, maxAge: { $max: "$age" } } }])
+db.Sales.aggregate([{$group: {_id: "$product",averagePrice: { $avg: "$price" }}}]).pretty()
 
-//step 7
-// $push
-db.people.aggregate([{ $group: { _id: null, allNames: { $push: "$name" } } }])
 
+
+
+db.Sales.aggregate([{ $group: { _id: "$product", minPrice: { $min: "$price" } } }]).pretty()
+
+db.Sales.aggregate([{ $group: { _id: "$product", maxPrice: { $max: "$price" } } }]).pretty()
+
+db.Sales.aggregate([{ $group: { _id: "$customer", products: { $push: "$product" } } }]).pretty()
+
+db.Sales.aggregate([{ $group: { _id: "$customer", uniqueProducts: { $addToSet: "$product" } } }]).pretty()
+
+db.Sales.aggregate([{ $group: { _id: "$product", totalQuantity: { $sum: "$quantity" }, totalSales: { $sum:{ $multiply:["$price","$quantity"] } },
+customers:{ $addToSet: "$customer" } } }]).pretty()
 //step 8
 // $addToSet
 db.people.aggregate([{ $group: { _id: null, uniqueNames: { $addToSet: "$name" } } }])
