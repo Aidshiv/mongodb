@@ -1,5 +1,6 @@
 // step 1:
 use restaurantDB
+db.createCollection("restaurantDB")
 
 // step 2:
 
