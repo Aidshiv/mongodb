@@ -1,62 +1,66 @@
-/*Experiment 4:
-Create and demonstrate how projection operators would be used:*/
-//step 1 (a)
-// Create a new database
-use experiment4
+db.createCollection("Products")
 
-// Create a new collection
-db.createCollection("students2")
-
-//step2
-// Show databases
-show dbs
-
-// Show collections
 show collections  
 
-//step 3 
-// Insert documents
-db.students2.insertMany([
+
+db.Products.insertMany([
   {
-    _id: 1,
-    name: "John",
-    grades: [
-      { score: 90, grade: "A" },
-      { score: 80, grade: "B" },
-      { score: 95, grade: "A" }
+    name: "Laptop",
+    brand: "BrandA",
+    features: [
+      { name: "Processor", value: "Intel i7" },
+      { name: "RAM", value: "16GB" },
+      { name: "Storage", value: "512GB SSD" }
+    ],
+    reviews: [
+      { user: "Alice", rating: 5, comment: "Excellent!" },
+      { user: "Bob", rating: 4, comment: "Very good" },
+      { user: "Charlie", rating: 3, comment: "Average" }
     ]
   },
   {
-    _id: 2,
-    name: "Jane",
-    grades: [
-      { score: 85, grade: "B" },
-      { score: 92, grade: "A" },
-      { score: 88, grade: "B" }
-    ]
-  },
-  {
-    _id: 3,
-    name: "Bob",
-    grades: [
-      { score: 78, grade: "C" },
-      { score: 95, grade: "A" },
-      { score: 92, grade: "A" }
+    name: "Smartphone",
+    brand: "BrandB",
+    features: [
+      { name: "Processor", value: "Snapdragon 888" },
+      { name: "RAM", value: "8GB" },
+      { name: "Storage", value: "256GB" }
+    ],
+    reviews: [
+      { user: "Dave", rating: 4, comment: "Good phone" },
+      { user: "Eve", rating: 2, comment: "Not satisfied" }
     ]
   }
 ])
 
 
-//step 4
-// $ projection operator
-db.students2.find({}, { grades: 1 })
+//Using the $ Projection
+db.Products.find(
+  { name: "Laptop", "reviews.user": "Alice" },
+  { "reviews.$": 1 }
+).pretty()
 
 
-//step 5
-// $elemMatch projection operator
-db.students.find({}, { grades: { $elemMatch: { score: { $gt: 80 } } } })
+//Using the $elemMatch
+db.Products.find(
+  { name: "Laptop" },
+  { reviews: { $elemMatch: { rating: { $gt: 4 } } } }
+).pretty()
 
 
-//step 6
-// $slice projection operator
-db.students2.find({}, { grades: { $slice: 2 } })
+// Using the $slice Projection
+db.Products.find(
+  { name: "Smartphone" },
+  { reviews: { $slice: 1 } }
+).pretty()
+
+
+//Multiple Projection Operators
+db.Products.find(
+  { name: "Laptop" },
+  {
+    name: 1,
+    features: { $slice: 2 },
+    reviews: { $elemMatch: { rating: 5 } }
+  }
+).pretty()
