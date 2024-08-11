@@ -1,6 +1,7 @@
 // step 1:
 
 use vacationRentals
+db.createCollection("listingsAndReviews")
 
 // step 2:
 
@@ -67,6 +68,7 @@ db.listingsAndReviews.find(
 
 // step 1:
 use ecommerce
+db.createCollection("products")
 
 // step 2 :
 
