@@ -62,4 +62,4 @@ db.restaurants.aggregate([
   { $sort: { averageRating: -1 } },
   { $project: { _id: 0, restaurant: "$_id", averageRating: 1, totalReviews: 1 } },
   { $skip: 1 }
-]).pretty()
+])
