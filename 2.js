@@ -4,23 +4,12 @@ fields of the documents:
 b. Develop a MongoDB query to display the first 5 documents:*/
 
 //step 1 (a)
-// Create a new database
-use experiment2
-
-// Create a new collection
 db.createCollection("people")
 
-
-
 //step2
-// Show databases
-show dbs
-
-// Show collections
 show collections
 
 //step 3 
-// Insert documents
 db.people.insertMany([
   { name: "John", age: 25, gender: "male", occupation: "Developer" },
   { name: "Jane", age: 28, gender: "female", occupation: "Designer" },
@@ -34,11 +23,7 @@ db.people.insertMany([
 
 
 //step 4
-// Select certain fields and ignore some fields
 db.people.find({}, { name: 1, age: 1, _id: 0 })
 
-
-
 //step 5 (b)
-// Display the first 5 documents
 db.people.find().limit(5)
